@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nebulor - Documentation</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #000000, #1a1a2e);
+            color: white;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: linear-gradient(45deg, #646cff, #8f7fff);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(100, 108, 255, 0.4);
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+            padding-left: 300px;
+            box-sizing: border-box;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 6rem 2rem 2rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 6rem 4rem;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .nav-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .nav-title {
+            color: #646cff;
+            font-weight: bold;
+            margin-bottom: 1.2rem;
+            padding: 0 1rem;
+            font-size: 1.1rem;
+        }
+
+        .nav-item {
+            padding: 0.7rem 1.2rem;
+            color: #ccc;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.7rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-item:hover {
+            background: rgba(100, 108, 255, 0.1);
+            color: #646cff;
+            transform: translateX(5px);
+        }
+
+        .nav-item.active {
+            background: rgba(100, 108, 255, 0.2);
+            color: #646cff;
+            font-weight: 500;
+        }
+
+        .content-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 3rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .content-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #646cff, #8f7fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 5px;
+            font-family: monospace;
+            margin: 1rem 0;
+            overflow-x: auto;
+            color: #ccc;
+        }
+
+        .highlight {
+            color: #646cff;
+        }
+
+        .warning {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .note {
+            background: rgba(100, 108, 255, 0.1);
+            border-left: 4px solid #646cff;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            color: #646cff;
+            font-weight: bold;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(100, 108, 255, 0.3);
+            border-radius: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(100, 108, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">← Back</a>
+    <div class="container">
+        <div class="sidebar">
+            <div class="nav-section">
+                <div class="nav-title">Getting Started</div>
+                <a href="#introduction" class="nav-item">Introduction</a>
+                <a href="#quick-start" class="nav-item">Quick Start</a>
+                <a href="#installation" class="nav-item">Installation</a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-title">Core Concepts</div>
+                <a href="#ai-agents" class="nav-item">AI Agents</a>
+                <a href="#blockchain-integration" class="nav-item">Blockchain Integration</a>
+                <a href="#smart-contracts" class="nav-item">Smart Contracts</a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-title">Guides</div>
+                <a href="#creating-agent" class="nav-item">Creating an Agent</a>
+                <a href="#deployment" class="nav-item">Deployment</a>
+                <a href="#management" class="nav-item">Management</a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-title">API Reference</div>
+                <a href="#rest-api" class="nav-item">REST API</a>
+                <a href="#websocket-api" class="nav-item">WebSocket API</a>
+                <a href="#smart-contract-api" class="nav-item">Smart Contract API</a>
+            </div>
+        </div>
+        <div class="main-content">
+            <!-- Introduction -->
+            <div id="introduction" class="content-section">
+                <h1 class="content-title">Introduction to Nebulor</h1>
+                <p>Nebulor is a revolutionary platform that enables developers to create, deploy, and manage AI agents on blockchain networks. Our platform combines the power of artificial intelligence with the security and transparency of blockchain technology.</p>
+                
+                <div class="note">
+                    Nebulor is designed for developers who want to build intelligent, autonomous systems that can interact with blockchain networks and smart contracts.
+                </div>
+
+                <h2>Key Features</h2>
+                <ul>
+                    <li>AI Agent Creation Framework</li>
+                    <li>Multi-chain Support</li>
+                    <li>Smart Contract Integration</li>
+                    <li>Advanced Security Features</li>
+                    <li>Real-time Monitoring</li>
+                </ul>
+            </div>
+
+            <!-- Quick Start -->
+            <div id="quick-start" class="content-section">
+                <h1 class="content-title">Quick Start Guide</h1>
+                <p>Get started with Nebulor in minutes. Follow these steps to create your first AI agent.</p>
+
+                <h2>1. Install the SDK</h2>
+                <div class="code-block">
+npm install @nebulor/sdk</div>
+
+                <h2>2. Initialize Your Project</h2>
+                <div class="code-block">
+import { Nebulor } from '@nebulor/sdk';
+
+const nebulor = new Nebulor({
+    apiKey: 'your-api-key',
+    network: 'ethereum'
+});</div>
+
+                <h2>3. Create an Agent</h2>
+                <div class="code-block">
+const agent = await nebulor.createAgent({
+    name: 'MyFirstAgent',
+    capabilities: ['defi', 'trading'],
+    model: 'gpt-4'
+});</div>
+            </div>
+
+            <!-- Installation -->
+            <div id="installation" class="content-section">
+                <h1 class="content-title">Installation Guide</h1>
+                <p>Complete guide to installing and configuring Nebulor in your development environment.</p>
+
+                <h2>System Requirements</h2>
+                <ul>
+                    <li>Node.js 16.x or higher</li>
+                    <li>npm 7.x or higher</li>
+                    <li>Ethereum wallet (MetaMask recommended)</li>
+                </ul>
+
+                <h2>Installation Steps</h2>
+                <div class="code-block">
+# Create a new project
+mkdir my-nebulor-project
+cd my-nebulor-project
+
+# Initialize npm project
+npm init -y
+
+# Install Nebulor SDK
+npm install @nebulor/sdk
+
+# Install peer dependencies
+npm install ethers@^5.0.0</div>
+
+                <div class="warning">
+                    Make sure to keep your API keys and private keys secure. Never commit them to version control.
+                </div>
+            </div>
+
+            <!-- AI Agents -->
+            <div id="ai-agents" class="content-section">
+                <h1 class="content-title">AI Agents</h1>
+                <p>Understanding AI agents in the Nebulor ecosystem and how they operate.</p>
+
+                <h2>Agent Types</h2>
+                <table>
+                    <tr>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Use Case</th>
+                    </tr>
+                    <tr>
+                        <td>Trading Agent</td>
+                        <td>Executes trading strategies</td>
+                        <td>DeFi automation</td>
+                    </tr>
+                    <tr>
+                        <td>Monitor Agent</td>
+                        <td>Monitors blockchain events</td>
+                        <td>Security & alerts</td>
+                    </tr>
+                    <tr>
+                        <td>Oracle Agent</td>
+                        <td>Provides external data</td>
+                        <td>Data feeds</td>
+                    </tr>
+                </table>
+
+                <h2>Agent Capabilities</h2>
+                <ul>
+                    <li>Autonomous decision making</li>
+                    <li>Smart contract interaction</li>
+                    <li>Event monitoring</li>
+                    <li>Data analysis</li>
+                </ul>
+            </div>
+
+            <!-- Blockchain Integration -->
+            <div id="blockchain-integration" class="content-section">
+                <h1 class="content-title">Blockchain Integration</h1>
+                <p>Learn how Nebulor integrates with various blockchain networks.</p>
+
+                <h2>Supported Networks</h2>
+                <ul>
+                    <li>Ethereum Mainnet</li>
+                    <li>Polygon</li>
+                    <li>Binance Smart Chain</li>
+                    <li>Arbitrum</li>
+                    <li>Optimism</li>
+                </ul>
+
+                <h2>Network Configuration</h2>
+                <div class="code-block">
+const nebulor = new Nebulor({
+    network: {
+        name: 'ethereum',
+        rpcUrl: 'https://your-rpc-url',
+        chainId: 1
+    }
+});</div>
+            </div>
+
+            <!-- Smart Contracts -->
+            <div id="smart-contracts" class="content-section">
+                <h1 class="content-title">Smart Contracts</h1>
+                <p>Understanding smart contract integration in Nebulor.</p>
+
+                <h2>Contract Templates</h2>
+                <div class="code-block">
+// Agent Factory Contract
+contract AgentFactory {
+    function createAgent(
+        string memory name,
+        address owner,
+        uint256 capabilities
+    ) public returns (address) {
+        // Contract implementation
+    }
+}</div>
+
+                <h2>Security Features</h2>
+                <ul>
+                    <li>Multi-signature control</li>
+                    <li>Timelock mechanisms</li>
+                    <li>Emergency pause</li>
+                    <li>Access control</li>
+                </ul>
+            </div>
+
+            <!-- Creating an Agent -->
+            <div id="creating-agent" class="content-section">
+                <h1 class="content-title">Creating an Agent</h1>
+                <p>Step-by-step guide to creating and configuring AI agents.</p>
+
+                <h2>Basic Configuration</h2>
+                <div class="code-block">
+const agent = await nebulor.createAgent({
+    name: 'TradingBot',
+    type: 'trading',
+    capabilities: ['swap', 'liquidity'],
+    parameters: {
+        maxSlippage: 0.5,
+        gasLimit: 500000
+    }
+});</div>
+
+                <h2>Advanced Features</h2>
+                <ul>
+                    <li>Custom trading strategies</li>
+                    <li>Risk management rules</li>
+                    <li>Performance monitoring</li>
+                </ul>
+            </div>
+
+            <!-- Deployment -->
+            <div id="deployment" class="content-section">
+                <h1 class="content-title">Deployment</h1>
+                <p>Learn how to deploy your AI agents to the blockchain.</p>
+
+                <h2>Deployment Process</h2>
+                <div class="code-block">
+// Deploy agent
+const deployment = await agent.deploy({
+    network: 'ethereum',
+    gasPrice: 'auto',
+    confirmations: 2
+});
+
+// Wait for deployment
+await deployment.wait();</div>
+
+                <div class="note">
+                    Always test your agents on testnet before deploying to mainnet.
+                </div>
+            </div>
+
+            <!-- Management -->
+            <div id="management" class="content-section">
+                <h1 class="content-title">Management</h1>
+                <p>Managing and monitoring your deployed AI agents.</p>
+
+                <h2>Monitoring</h2>
+                <div class="code-block">
+// Get agent status
+const status = await agent.getStatus();
+
+// Update configuration
+await agent.updateConfig({
+    maxGas: 1000000,
+    alertThreshold: 0.1
+});</div>
+
+                <h2>Performance Metrics</h2>
+                <ul>
+                    <li>Transaction success rate</li>
+                    <li>Gas efficiency</li>
+                    <li>Profit/loss tracking</li>
+                    <li>Error monitoring</li>
+                </ul>
+            </div>
+
+            <!-- REST API -->
+            <div id="rest-api" class="content-section">
+                <h1 class="content-title">REST API</h1>
+                <p>Complete reference for the Nebulor REST API.</p>
+
+                <h2>Authentication</h2>
+                <div class="code-block">
+curl -X POST https://api.nebulor.com/v1/auth \
+  -H "Content-Type: application/json" \
+  -d '{"apiKey": "your-api-key"}'</div>
+
+                <h2>Endpoints</h2>
+                <table>
+                    <tr>
+                        <th>Endpoint</th>
+                        <th>Method</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>/agents</td>
+                        <td>GET</td>
+                        <td>List all agents</td>
+                    </tr>
+                    <tr>
+                        <td>/agents/:id</td>
+                        <td>POST</td>
+                        <td>Create new agent</td>
+                    </tr>
+                    <tr>
+                        <td>/agents/:id</td>
+                        <td>PUT</td>
+                        <td>Update agent</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- WebSocket API -->
+            <div id="websocket-api" class="content-section">
+                <h1 class="content-title">WebSocket API</h1>
+                <p>Real-time communication with Nebulor agents.</p>
+
+                <h2>Connection</h2>
+                <div class="code-block">
+const ws = new WebSocket('wss://api.nebulor.com/v1/ws');
+ws.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    console.log('Received:', data);
+};</div>
+
+                <h2>Event Types</h2>
+                <ul>
+                    <li>Agent status updates</li>
+                    <li>Transaction notifications</li>
+                    <li>Error alerts</li>
+                    <li>Performance metrics</li>
+                </ul>
+            </div>
+
+            <!-- Smart Contract API -->
+            <div id="smart-contract-api" class="content-section">
+                <h1 class="content-title">Smart Contract API</h1>
+                <p>Interacting with Nebulor smart contracts.</p>
+
+                <h2>Contract Interfaces</h2>
+                <div class="code-block">
+interface INebulorAgent {
+    function execute(
+        bytes calldata data
+    ) external returns (bool);
+    
+    function updateConfig(
+        bytes calldata config
+    ) external returns (bool);
+    
+    function pause() external;
+    function resume() external;
+}</div>
+
+                <h2>Events</h2>
+                <div class="code-block">
+event AgentCreated(
+    address indexed agent,
+    address indexed owner,
+    string name
+);
+
+event ExecutionCompleted(
+    address indexed agent,
+    bytes32 indexed taskId,
+    bool success
+);</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Show active section based on hash
+        function showSection(hash) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Show selected section
+            const section = document.querySelector(hash);
+            if (section) {
+                section.classList.add('active');
+                // Add active class to nav item
+                const navItem = document.querySelector(`a[href="${hash}"]`);
+                if (navItem) {
+                    navItem.classList.add('active');
+                }
+            } else {
+                // Show introduction by default
+                document.querySelector('#introduction').classList.add('active');
+                document.querySelector('a[href="#introduction"]').classList.add('active');
+            }
+        }
+
+        // Handle initial load
+        showSection(window.location.hash || '#introduction');
+
+        // Handle navigation
+        window.addEventListener('hashchange', () => {
+            showSection(window.location.hash);
+        });
+
+        // Handle nav item clicks
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                const hash = e.target.getAttribute('href');
+                showSection(hash);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nebulor - Roadmap</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #000000, #1a1a2e);
+            color: white;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: linear-gradient(45deg, #646cff, #8f7fff);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(100, 108, 255, 0.4);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 6rem 2rem 2rem;
+        }
+
+        .roadmap-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, #646cff, #8f7fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, #646cff, #8f7fff);
+        }
+
+        .milestone {
+            margin-bottom: 4rem;
+            position: relative;
+            width: 45%;
+        }
+
+        .milestone:nth-child(odd) {
+            margin-left: auto;
+        }
+
+        .milestone-content {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .milestone::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #646cff;
+            border-radius: 50%;
+            top: 0;
+        }
+
+        .milestone:nth-child(odd)::before {
+            left: -60px;
+        }
+
+        .milestone:nth-child(even)::before {
+            right: -60px;
+        }
+
+        .phase {
+            font-size: 1.2rem;
+            color: #646cff;
+            margin-bottom: 1rem;
+        }
+
+        .description {
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 0.25rem 1rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .status.planned {
+            background: rgba(100, 108, 255, 0.2);
+            color: #8f7fff;
+        }
+
+        .status.in-progress {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+
+        .status.completed {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">← Back</a>
+    <div class="container">
+        <h1 class="roadmap-title">Nebulor Development Roadmap</h1>
+        <div class="timeline">
+            <div class="milestone">
+                <div class="milestone-content">
+                    <div class="phase">Phase 1: Foundation (Q1 2025)</div>
+                    <div class="description">
+                        • Launch of Nebulor platform core infrastructure<br>
+                        • Implementation of basic AI agent creation tools<br>
+                        • Integration with major blockchain networks<br>
+                        • Development of smart contract templates
+                    </div>
+                    <span class="status in-progress">In Progress</span>
+                </div>
+            </div>
+            <div class="milestone">
+                <div class="milestone-content">
+                    <div class="phase">Phase 2: Expansion (Q2 2025)</div>
+                    <div class="description">
+                        • Advanced AI agent customization features<br>
+                        • Multi-chain support expansion<br>
+                        • Launch of Nebulor marketplace<br>
+                        • Implementation of agent-to-agent communication protocols
+                    </div>
+                    <span class="status planned">Planned</span>
+                </div>
+            </div>
+            <div class="milestone">
+                <div class="milestone-content">
+                    <div class="phase">Phase 3: Enhancement (Q3 2025)</div>
+                    <div class="description">
+                        • Introduction of AI agent templates<br>
+                        • Advanced analytics and monitoring tools<br>
+                        • Cross-chain interoperability features<br>
+                        • Launch of developer APIs
+                    </div>
+                    <span class="status planned">Planned</span>
+                </div>
+            </div>
+            <div class="milestone">
+                <div class="milestone-content">
+                    <div class="phase">Phase 4: Ecosystem (Q4 2025)</div>
+                    <div class="description">
+                        • Launch of Nebulor DAO<br>
+                        • Integration with major DeFi protocols<br>
+                        • Advanced AI training capabilities<br>
+                        • Community governance implementation
+                    </div>
+                    <span class="status planned">Planned</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

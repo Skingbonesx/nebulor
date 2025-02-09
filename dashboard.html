@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nebulor - Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #000000, #1a1a2e);
+            color: white;
+        }
+
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 2rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .wallet-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .wallet-address {
+            font-family: monospace;
+            color: #ccc;
+        }
+
+        .disconnect-button {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+            border: 1px solid #ff6b6b;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .disconnect-button:hover {
+            background: rgba(255, 107, 107, 0.3);
+        }
+
+        .nav-item {
+            padding: 1rem;
+            color: #ccc;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover {
+            background: rgba(100, 108, 255, 0.1);
+            color: #646cff;
+        }
+
+        .nav-item.active {
+            background: rgba(100, 108, 255, 0.2);
+            color: #646cff;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat {
+            font-size: 2rem;
+            margin: 1rem 0;
+            color: #646cff;
+        }
+
+        .create-agent-button {
+            background: linear-gradient(45deg, #646cff, #8f7fff);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        .create-agent-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(100, 108, 255, 0.4);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            color: #646cff;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+
+        .status-active {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
+
+        .status-inactive {
+            background: rgba(108, 117, 125, 0.2);
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <a href="#" class="nav-item active">Dashboard</a>
+            <a href="#" class="nav-item">My Agents</a>
+            <a href="#" class="nav-item">Analytics</a>
+            <a href="#" class="nav-item">Settings</a>
+            <button class="create-agent-button">Create New Agent</button>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <div class="wallet-info">
+                    <span>Connected Wallet:</span>
+                    <span id="walletAddress" class="wallet-address"></span>
+                </div>
+                <button id="disconnectButton" class="disconnect-button">Disconnect</button>
+            </div>
+
+            <div class="grid">
+                <div class="card">
+                    <h3>Active Agents</h3>
+                    <div class="stat">3</div>
+                    <p>Total agents deployed</p>
+                </div>
+                <div class="card">
+                    <h3>Total Transactions</h3>
+                    <div class="stat">127</div>
+                    <p>Successful transactions</p>
+                </div>
+                <div class="card">
+                    <h3>Performance</h3>
+                    <div class="stat">98.5%</div>
+                    <p>Success rate</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Recent Agents</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Agent Name</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Last Active</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Trading Bot Alpha</td>
+                            <td>DeFi Trading</td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                            <td>2 minutes ago</td>
+                        </tr>
+                        <tr>
+                            <td>Monitor Beta</td>
+                            <td>Network Monitor</td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                            <td>15 minutes ago</td>
+                        </tr>
+                        <tr>
+                            <td>Oracle Agent</td>
+                            <td>Data Provider</td>
+                            <td><span class="status-badge status-inactive">Inactive</span></td>
+                            <td>1 hour ago</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if wallet is connected
+        const walletAddress = sessionStorage.getItem('walletAddress');
+        if (!walletAddress) {
+            window.location.href = 'connect-wallet.html';
+        }
+
+        // Display wallet address
+        const addressElement = document.getElementById('walletAddress');
+        if (addressElement && walletAddress) {
+            const shortAddress = `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`;
+            addressElement.textContent = shortAddress;
+        }
+
+        // Handle disconnect
+        document.getElementById('disconnectButton').addEventListener('click', () => {
+            sessionStorage.removeItem('walletAddress');
+            window.location.href = 'connect-wallet.html';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nebulor</title>
+    <style>
+        /* Existing styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: black;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 100;
+        }
+
+        .brand {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .brand img {
+            height: 100%;
+            width: auto;
+        }
+
+        .brand-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #646cff;
+        }
+
+        /* New App button styles */
+        .app-button {
+            background: linear-gradient(45deg, #646cff, #8f7fff);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .app-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(100, 108, 255, 0.4);
+            background: linear-gradient(45deg, #8f7fff, #646cff);
+            color: white !important;
+        }
+
+        .app-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(100, 108, 255, 0.4);
+        }
+
+        .main-content {
+            flex: 1;
+            position: relative;
+            background-image: url('background.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .main-content img {
+            display: none;
+        }
+
+        .interactive-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 1);
+            padding: 2rem;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            backdrop-filter: blur(0x);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .nebulor-title {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .nebulor-phonetic {
+            font-style: italic;
+            color: #ccc;
+            margin-bottom: 0.5rem;
+        }
+
+        .nebulor-hash {
+            font-family: monospace;
+            color: #a0a0a0;
+            word-break: break-all;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .nebulor-definition {
+            margin-bottom: 1rem;
+            min-height: 4em;
+        }
+
+        .typing::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        footer {
+            background-color: black;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+        }
+
+        .connect-wallet {
+            cursor: pointer;
+        }
+
+        .connect-wallet:hover {
+            color: #646cff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand">
+            <img src="logo.png" alt="Brand Logo">
+            <span class="brand-text">Nebulor</span>
+        </div>
+        <nav class="nav-links">
+            <a href="roadmap.html">Roadmap</a>
+            <a href="whitepaper.html">Whitepaper</a>
+            <a href="docs.html">Docs</a>
+            <a href="connect-wallet.html" class="app-button">Launch App</a>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="interactive-box">
+            <div class="nebulor-title">Ɲɇɓʊłøř</div>
+            <div class="nebulor-phonetic">[Neb-yu-lor] · proper noun</div>
+            <div class="nebulor-hash">89nnWMkWeF9LSJvAWcN2JFQfeWdDk6diKEckeToEU1hE</div>
+            <div class="nebulor-definition">
+                <div class="definition-1 typing"></div>
+                <div class="definition-2 typing"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-links">
+            <a href="privacy.html">Privacy</a>
+            <a href="#">X</a>
+        </div>
+        <div class="copyright">© 2025 nebulor</div>
+    </footer>
+
+    <script>
+        const definitions = [
+"A gateway to the boundless beyond.",  
+"A cosmic bridge between worlds.",  
+"The eternal dance of stardust.",  
+"Where infinity meets possibility.",  
+"The nexus of celestial dreams.",  
+"A realm where time dissolves into the unknown.",  
+"A silent whisper carried by the cosmic winds.",  
+"A bridge between dimensions unseen.",  
+"The symphony of the universe unfolding.",  
+"A journey beyond the last horizon.",  
+"The stars' secret language, waiting to be heard.",  
+"An odyssey written in constellations.",  
+"The echo of galaxies long forgotten.",  
+"A cosmic river flowing through eternity.",  
+"A beacon in the endless void.",  
+"Where gravity waltzes with destiny.",  
+"The universe's heartbeat in celestial rhythm.",  
+"A gateway where myths become reality.",  
+"The silent poetry of infinite space.",  
+"A tapestry woven from cosmic dust.",  
+"A celestial voyage through realms untold.",  
+"The infinite embrace of the unknown.",  
+"A dance of photons in the vast abyss.",  
+"The whispers of nebulae shaping new worlds.",  
+"A cosmic riddle waiting to be solved.",  
+"A voyage into the fabric of space.",  
+"A playground for wandering starlight.",  
+"The eternal hum of distant galaxies.",  
+"A beacon guiding lost travelers home.",  
+"A place where time bends and light sings.",  
+"The ever-expanding breath of existence.",  
+"A realm sculpted by the echoes of creation.",  
+"The silent birth of newborn stars.",  
+"A celestial journey painted in auroras.",  
+"Where the void hums with possibility.",  
+"A cosmic lullaby sung by the universe.",  
+"The ever-turning spiral of cosmic wonder.",  
+"A doorway beyond the reach of time.",  
+"The dance of shadows cast by distant suns.",  
+"A drifting island in the ocean of stars.",  
+"The dreamscape of the cosmos unfolding.",  
+"A passage through the corridors of infinity.",  
+"The grand orchestra of stellar birth.",  
+"A silent storm brewing in the void.",  
+"A universe where echoes shape reality.",  
+"A dance of energy sculpting the cosmos.",  
+"A journey through the silent depths of space.",  
+"The infinite stage of celestial wonders.",  
+"A celestial song written in beams of light.",  
+"Where space and time weave new realities."  
+        ];
+
+        function getRandomDefinition(exclude) {
+            let available = definitions.filter(def => def !== exclude);
+            return available[Math.floor(Math.random() * available.length)];
+        }
+
+        function typeWriter(element, text, speed = 50) {
+            element.textContent = '';
+            element.classList.add('typing');
+            let i = 0;
+            
+            return new Promise(resolve => {
+                function type() {
+                    if (i < text.length) {
+                        element.textContent += text.charAt(i);
+                        i++;
+                        setTimeout(type, speed);
+                    } else {
+                        resolve();
+                    }
+                }
+                type();
+            });
+        }
+
+        async function updateText() {
+            const def1Element = document.querySelector('.definition-1');
+            const def2Element = document.querySelector('.definition-2');
+            
+            // Get two different random definitions
+            const firstDef = getRandomDefinition();
+            const secondDef = getRandomDefinition(firstDef);
+            
+            // Remove typing class to hide cursor during transition
+            def1Element.classList.remove('typing');
+            def2Element.classList.remove('typing');
+            
+            // Type both definitions
+            await typeWriter(def1Element, "1. " + firstDef);
+            await typeWriter(def2Element, "2. " + secondDef);
+        }
+
+        // Initial update
+        updateText();
+
+        // Update text every 8 seconds
+        setInterval(updateText, 8000);
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
