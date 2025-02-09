@@ -661,6 +661,7 @@
         </div>
     </div>
 
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
     <script>
         // Check if wallet is connected
         const walletAddress = sessionStorage.getItem('walletAddress');
@@ -675,33 +676,11 @@
             addressElement.textContent = shortAddress;
         }
 
-        // Handle disconnect
-        document.getElementById('disconnectButton').addEventListener('click', () => {
-            sessionStorage.removeItem('walletAddress');
-            sessionStorage.removeItem('nebulorWallet');
-            window.location.href = 'connect-wallet.html';
-        });
-
-        // Handle copy main address
-        document.getElementById('copyMainAddress').addEventListener('click', async () => {
-            const fullAddress = sessionStorage.getItem('walletAddress');
-            if (!fullAddress) return;
-            
-            try {
-                await navigator.clipboard.writeText(fullAddress);
-                const copyIcon = document.querySelector('#copyMainAddress i');
-                copyIcon.classList.remove('fa-copy');
-                copyIcon.classList.add('fa-check');
-                
-                setTimeout(() => {
-                    copyIcon.classList.remove('fa-check');
-                    copyIcon.classList.add('fa-copy');
-                }, 2000);
-            } catch (err) {
-                console.error('Failed to copy:', err);
-                alert('Failed to copy address. Please try again.');
-            }
-        });
+        // Initialize Solana connection
+        const connection = new solanaWeb3.Connection(
+            'https://api.devnet.solana.com',
+            'confirmed'
+        );
 
         let nebulorWallet = null;
         let walletBalance = 0;
@@ -710,33 +689,75 @@
             return `${address.slice(0, 4)}...${address.slice(-4)}`;
         }
 
-        function generateRandomSolanaAddress() {
-            const chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
-            let address = '';
-            for (let i = 0; i < 44; i++) {
-                address += chars.charAt(Math.floor(Math.random() * chars.length));
+        async function createSolanaWallet() {
+            try {
+                // Generate new keypair
+                const keypair = solanaWeb3.Keypair.generate();
+                const publicKey = keypair.publicKey.toString();
+                
+                // Store private key securely (in this case sessionStorage, but in production should use more secure methods)
+                sessionStorage.setItem('nebulorWalletPrivateKey', JSON.stringify(Array.from(keypair.secretKey)));
+                
+                return {
+                    publicKey: publicKey,
+                    keypair: keypair
+                };
+            } catch (error) {
+                console.error('Error creating wallet:', error);
+                throw error;
             }
-            return address;
         }
 
-        document.getElementById('createWalletBtn').addEventListener('click', () => {
-            const newAddress = generateRandomSolanaAddress();
-            nebulorWallet = newAddress;
-            sessionStorage.setItem('nebulorWallet', newAddress);
-            
-            document.getElementById('shortWalletAddress').textContent = formatAddress(newAddress);
-            document.getElementById('walletBox').classList.add('active');
-            
-            const container = document.getElementById('walletButtonContainer');
-            container.innerHTML = `
-                <button class="wallet-button">
-                    <img src="https://cryptologos.cc/logos/solana-sol-logo.png" alt="Solana Logo">
-                    <div class="wallet-info-container">
-                        <span class="balance-label">Available Balance</span>
-                        <span class="balance-amount" id="mainBalance">0.000 SOL</span>
-                    </div>
-                </button>
-            `;
+        async function getWalletBalance(publicKey) {
+            try {
+                const balance = await connection.getBalance(new solanaWeb3.PublicKey(publicKey));
+                return balance / solanaWeb3.LAMPORTS_PER_SOL;
+            } catch (error) {
+                console.error('Error getting balance:', error);
+                return 0;
+            }
+        }
+
+        document.getElementById('createWalletBtn').addEventListener('click', async () => {
+            try {
+                const wallet = await createSolanaWallet();
+                nebulorWallet = wallet.publicKey;
+                sessionStorage.setItem('nebulorWallet', wallet.publicKey);
+                
+                document.getElementById('shortWalletAddress').textContent = formatAddress(wallet.publicKey);
+                document.getElementById('walletBox').classList.add('active');
+                
+                const container = document.getElementById('walletButtonContainer');
+                container.innerHTML = `
+                    <button class="wallet-button">
+                        <img src="https://cryptologos.cc/logos/solana-sol-logo.png" alt="Solana Logo">
+                        <div class="wallet-info-container">
+                            <span class="balance-label">Available Balance</span>
+                            <span class="balance-amount" id="mainBalance">0.000 SOL</span>
+                            <div class="balance-warning">This is a devnet wallet. Fund it using Solana devnet faucet.</div>
+                        </div>
+                    </button>
+                `;
+
+                // Request airdrop from devnet faucet
+                try {
+                    const signature = await connection.requestAirdrop(
+                        new solanaWeb3.PublicKey(wallet.publicKey),
+                        solanaWeb3.LAMPORTS_PER_SOL // Request 1 SOL
+                    );
+                    await connection.confirmTransaction(signature);
+                    
+                    // Update balance after airdrop
+                    const balance = await getWalletBalance(wallet.publicKey);
+                    document.getElementById('mainBalance').textContent = `${balance.toFixed(3)} SOL`;
+                    document.getElementById('solBalance').textContent = balance.toFixed(3);
+                } catch (error) {
+                    console.error('Error requesting airdrop:', error);
+                }
+            } catch (error) {
+                console.error('Error in wallet creation:', error);
+                alert('Failed to create wallet. Please try again.');
+            }
         });
 
         document.getElementById('copyAddress').addEventListener('click', async () => {
@@ -803,22 +824,28 @@
             });
         });
 
-        setInterval(() => {
+        // Modified balance update interval
+        setInterval(async () => {
             if (nebulorWallet) {
-                walletBalance = Math.random() * 0.2;
-                
-                const mainBalanceElement = document.getElementById('mainBalance');
-                mainBalanceElement.textContent = `${walletBalance.toFixed(3)} SOL`;
-                mainBalanceElement.classList.add('balance-update');
-                
-                setTimeout(() => {
-                    mainBalanceElement.classList.remove('balance-update');
-                }, 500);
-                
-                document.getElementById('solBalance').textContent = walletBalance.toFixed(3);
+                try {
+                    const balance = await getWalletBalance(nebulorWallet);
+                    
+                    const mainBalanceElement = document.getElementById('mainBalance');
+                    mainBalanceElement.textContent = `${balance.toFixed(3)} SOL`;
+                    mainBalanceElement.classList.add('balance-update');
+                    
+                    setTimeout(() => {
+                        mainBalanceElement.classList.remove('balance-update');
+                    }, 500);
+                    
+                    document.getElementById('solBalance').textContent = balance.toFixed(3);
+                } catch (error) {
+                    console.error('Error updating balance:', error);
+                }
             }
         }, 5000);
 
+        // Load existing wallet if available
         const existingWallet = sessionStorage.getItem('nebulorWallet');
         if (existingWallet) {
             nebulorWallet = existingWallet;
@@ -832,9 +859,16 @@
                     <div class="wallet-info-container">
                         <span class="balance-label">Available Balance</span>
                         <span class="balance-amount" id="mainBalance">0.000 SOL</span>
+                        <div class="balance-warning">This is a devnet wallet. Fund it using Solana devnet faucet.</div>
                     </div>
                 </button>
             `;
+
+            // Update initial balance
+            getWalletBalance(existingWallet).then(balance => {
+                document.getElementById('mainBalance').textContent = `${balance.toFixed(3)} SOL`;
+                document.getElementById('solBalance').textContent = balance.toFixed(3);
+            });
         }
     </script>
 </body>
