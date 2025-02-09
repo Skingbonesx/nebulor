@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nebulor - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
             margin: 0;
@@ -78,10 +79,17 @@
             padding: 1rem;
             color: #ccc;
             text-decoration: none;
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
             margin-bottom: 0.5rem;
             border-radius: 5px;
             transition: all 0.3s ease;
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
         }
 
         .nav-item:hover {
@@ -103,245 +111,201 @@
             backdrop-filter: blur(10px);
         }
 
-        .welcome-title {
-            font-size: 2rem;
+        .private-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(100, 108, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
             margin-bottom: 1rem;
+        }
+
+        .action-button {
             background: linear-gradient(45deg, #646cff, #8f7fff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(100, 108, 255, 0.4);
+        }
+
+        .wallet-panel {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 2rem;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .wallet-panel.active {
+            transform: translateX(0);
+        }
+
+        .user-form {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 10px;
             margin-top: 2rem;
         }
 
-        .feature-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 1.5rem;
-            border-radius: 10px;
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ccc;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 5px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            box-sizing: border-box;
         }
 
-        .feature-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .feature-icon {
-            width: 48px;
-            height: 48px;
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
             margin-bottom: 1rem;
             color: #646cff;
         }
 
-        .feature-title {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            color: #8f7fff;
+        .token-list {
+            margin-top: 1rem;
         }
 
-        .feature-description {
-            color: #ccc;
-            line-height: 1.6;
-        }
-
-        .getting-started {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 2rem;
-            border-radius: 15px;
-            margin: 2rem 0;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .step {
+        .token-item {
             display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            padding: 1rem;
+            justify-content: space-between;
+            padding: 0.75rem;
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-        }
-
-        .step-number {
-            background: #646cff;
-            color: white;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        .resources {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .resource-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 1.5rem;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .resource-title {
-            color: #646cff;
+            border-radius: 5px;
             margin-bottom: 0.5rem;
-        }
-
-        .resource-link {
-            color: #8f7fff;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 0.5rem;
-        }
-
-        .resource-link:hover {
-            text-decoration: underline;
-        }
-
-        .profile-section {
-            display: none;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            margin-bottom: 2rem;
-        }
-
-        .profile-section.active {
-            display: block;
-        }
-
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .profile-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: #646cff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: white;
         }
     </style>
 </head>
 <body>
     <div class="dashboard">
         <div class="sidebar">
-            <a href="#" class="nav-item active" data-section="welcome">Welcome</a>
-            <a href="docs.html" class="nav-item">Documentation</a>
-            <a href="privacy.html" class="nav-item">Privacy</a>
-            <a href="#" class="nav-item" data-section="profile">Profile</a>
+            <a href="#" class="nav-item active" data-section="welcome">
+                <i class="fas fa-home"></i>
+                Welcome
+            </a>
+            <a href="#" class="nav-item" data-section="profile">
+                <i class="fas fa-user"></i>
+                Profile
+            </a>
         </div>
 
         <div class="main-content">
             <div class="header">
                 <div class="wallet-info">
-                    <span>Connected Wallet:</span>
+                    <i class="fas fa-wallet"></i>
+                    <span>Connected:</span>
                     <span id="walletAddress" class="wallet-address"></span>
                 </div>
-                <button id="disconnectButton" class="disconnect-button">Disconnect</button>
+                <button id="disconnectButton" class="disconnect-button">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Disconnect
+                </button>
             </div>
 
             <div id="welcomeSection" class="welcome-section">
-                <h1 class="welcome-title">Welcome to Nebulor</h1>
-                <p>Your gateway to decentralized AI agents on the blockchain. Get started with our powerful features and tools.</p>
-
-                <div class="feature-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">🤖</div>
-                        <h3 class="feature-title">AI Agents</h3>
-                        <p class="feature-description">Create and deploy intelligent agents that autonomously interact with blockchain networks and smart contracts.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">⛓️</div>
-                        <h3 class="feature-title">Multi-chain Support</h3>
-                        <p class="feature-description">Deploy your agents across multiple blockchain networks with seamless integration and management.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">📊</div>
-                        <h3 class="feature-title">Analytics Dashboard</h3>
-                        <p class="feature-description">Monitor your agents' performance with real-time analytics and comprehensive reporting tools.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🔒</div>
-                        <h3 class="feature-title">Security First</h3>
-                        <p class="feature-description">Built with enterprise-grade security features to protect your assets and operations.</p>
-                    </div>
+                <div class="private-badge">
+                    <i class="fas fa-lock"></i>
+                    Nebulor is private only
                 </div>
 
-                <div class="getting-started">
+                <div class="section-title">
+                    <i class="fas fa-wallet"></i>
+                    <h2>Create Nebulor Wallet</h2>
+                </div>
+                <p>Generate your unique Solana wallet and start exploring Nebulor's features.</p>
+                <button id="createWalletBtn" class="action-button">
+                    <i class="fas fa-plus-circle"></i>
+                    Create Wallet
+                </button>
+
+                <div class="section-title" style="margin-top: 2rem;">
+                    <i class="fas fa-book"></i>
                     <h2>Getting Started</h2>
-                    <div class="steps">
-                        <div class="step">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <h3>Connect Your Wallet</h3>
-                                <p>Link your Phantom wallet to access all Nebulor features and manage your agents securely.</p>
-                            </div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <h3>Create Your First Agent</h3>
-                                <p>Choose from our templates or create a custom AI agent tailored to your needs.</p>
-                            </div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <h3>Deploy and Monitor</h3>
-                                <p>Deploy your agent to your chosen network and monitor its performance in real-time.</p>
-                            </div>
-                        </div>
+                </div>
+                <p>Learn how to make the most of Nebulor's powerful features and tools.</p>
+                <button id="learnMoreBtn" class="action-button">
+                    <i class="fas fa-graduation-cap"></i>
+                    Start Learning
+                </button>
+
+                <div class="section-title" style="margin-top: 2rem;">
+                    <i class="fas fa-users"></i>
+                    <h2>Join User List</h2>
+                </div>
+                <p>Register to join our exclusive community of Nebulor users.</p>
+                <div class="user-form">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" placeholder="Enter your name">
                     </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" placeholder="Enter your email">
+                    </div>
+                    <button class="action-button">
+                        <i class="fas fa-paper-plane"></i>
+                        Submit Application
+                    </button>
                 </div>
 
-                <div class="resources">
-                    <div class="resource-card">
-                        <h3 class="resource-title">Documentation</h3>
-                        <p>Comprehensive guides and API references to help you build powerful AI agents.</p>
-                        <a href="docs.html" class="resource-link">View Documentation →</a>
-                    </div>
-                    <div class="resource-card">
-                        <h3 class="resource-title">Templates</h3>
-                        <p>Ready-to-use agent templates for common use cases and scenarios.</p>
-                        <a href="#" class="resource-link">Browse Templates →</a>
-                    </div>
-                    <div class="resource-card">
-                        <h3 class="resource-title">Community</h3>
-                        <p>Join our community of developers and AI enthusiasts.</p>
-                        <a href="#" class="resource-link">Join Discord →</a>
-                    </div>
+                <div class="section-title" style="margin-top: 2rem;">
+                    <i class="fab fa-twitter"></i>
+                    <h2>Join Us on X</h2>
                 </div>
+                <p>Follow us on X for the latest updates and announcements.</p>
+                <a href="https://twitter.com/nebulor" target="_blank" class="action-button">
+                    <i class="fab fa-twitter"></i>
+                    Follow on X
+                </a>
             </div>
+        </div>
 
-            <div id="profileSection" class="profile-section">
-                <div class="profile-header">
-                    <div class="profile-avatar">N</div>
-                    <div>
-                        <h2>Your Profile</h2>
-                        <p class="wallet-address" id="profileWalletAddress"></p>
-                    </div>
-                </div>
-                <div class="profile-content">
-                    <h3>Account Details</h3>
-                    <p>Manage your profile settings and preferences here.</p>
+        <div id="walletPanel" class="wallet-panel">
+            <div class="section-title">
+                <i class="fas fa-wallet"></i>
+                <h2>Your Wallet</h2>
+            </div>
+            <div class="wallet-address" id="fullWalletAddress"></div>
+            
+            <div class="section-title" style="margin-top: 2rem;">
+                <i class="fas fa-coins"></i>
+                <h2>Balance</h2>
+            </div>
+            <div class="token-list">
+                <div class="token-item">
+                    <span>SOL</span>
+                    <span>0.000</span>
                 </div>
             </div>
         </div>
@@ -356,12 +320,12 @@
 
         // Display wallet address
         const addressElement = document.getElementById('walletAddress');
-        const profileAddressElement = document.getElementById('profileWalletAddress');
+        const fullAddressElement = document.getElementById('fullWalletAddress');
         if (addressElement && walletAddress) {
             const shortAddress = `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`;
             addressElement.textContent = shortAddress;
-            if (profileAddressElement) {
-                profileAddressElement.textContent = shortAddress;
+            if (fullAddressElement) {
+                fullAddressElement.textContent = walletAddress;
             }
         }
 
@@ -371,31 +335,25 @@
             window.location.href = 'connect-wallet.html';
         });
 
-        // Handle navigation
-        const welcomeSection = document.getElementById('welcomeSection');
-        const profileSection = document.getElementById('profileSection');
-        const navItems = document.querySelectorAll('.nav-item');
+        // Handle wallet creation
+        document.getElementById('createWalletBtn').addEventListener('click', () => {
+            document.getElementById('walletPanel').classList.add('active');
+        });
 
-        navItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                const section = e.target.getAttribute('data-section');
-                if (section) {
-                    e.preventDefault();
-                    navItems.forEach(nav => nav.classList.remove('active'));
-                    e.target.classList.add('active');
+        // Handle learn more button
+        document.getElementById('learnMoreBtn').addEventListener('click', () => {
+            // Add your learning content logic here
+            alert('Learning content coming soon!');
+        });
 
-                    // Hide all sections
-                    welcomeSection.style.display = 'none';
-                    profileSection.style.display = 'none';
-
-                    // Show selected section
-                    if (section === 'welcome') {
-                        welcomeSection.style.display = 'block';
-                    } else if (section === 'profile') {
-                        profileSection.style.display = 'block';
-                    }
-                }
-            });
+        // Close wallet panel when clicking outside
+        document.addEventListener('click', (e) => {
+            const walletPanel = document.getElementById('walletPanel');
+            const createWalletBtn = document.getElementById('createWalletBtn');
+            
+            if (!walletPanel.contains(e.target) && e.target !== createWalletBtn) {
+                walletPanel.classList.remove('active');
+            }
         });
     </script>
 </body>
