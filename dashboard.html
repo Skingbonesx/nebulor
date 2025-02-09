@@ -382,20 +382,73 @@
         }
 
         .wallet-button {
-            background: none;
-            border: none;
-            padding: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .wallet-button:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(100, 108, 255, 0.2);
         }
 
         .wallet-button img {
             width: 32px;
             height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px;
         }
 
-        .wallet-button:hover {
-            transform: scale(1.1);
+        .wallet-info-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            flex: 1;
+        }
+
+        .balance-label {
+            font-size: 0.8rem;
+            color: #ccc;
+            margin-bottom: 0.2rem;
+        }
+
+        .balance-amount {
+            font-size: 1.2rem;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .balance-change {
+            font-size: 0.8rem;
+            color: #4CAF50;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            margin-top: 0.2rem;
+        }
+
+        .balance-change.negative {
+            color: #ff6b6b;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .balance-update {
+            animation: pulse 0.5s ease;
         }
 
         .balance-warning {
@@ -628,7 +681,6 @@
             nebulorWallet = newAddress;
             sessionStorage.setItem('nebulorWallet', newAddress);
             
-            // Update both short and full address displays
             document.getElementById('shortWalletAddress').textContent = formatAddress(newAddress);
             document.getElementById('walletBox').classList.add('active');
             
@@ -636,7 +688,14 @@
             container.innerHTML = `
                 <button class="wallet-button">
                     <img src="https://cryptologos.cc/logos/solana-sol-logo.png" alt="Solana Logo">
-                    <span id="mainBalance">0.000 SOL</span>
+                    <div class="wallet-info-container">
+                        <span class="balance-label">Available Balance</span>
+                        <span class="balance-amount" id="mainBalance">0.000 SOL</span>
+                        <span class="balance-change" id="balanceChange">
+                            <i class="fas fa-arrow-up"></i>
+                            +0.000 SOL (24h)
+                        </span>
+                    </div>
                 </button>
             `;
         });
@@ -711,11 +770,30 @@
             });
         });
 
+        let previousBalance = 0;
         setInterval(() => {
             if (nebulorWallet) {
+                previousBalance = walletBalance;
                 walletBalance = Math.random() * 0.2;
+                
+                const mainBalanceElement = document.getElementById('mainBalance');
+                const balanceChangeElement = document.getElementById('balanceChange');
+                const change = walletBalance - previousBalance;
+                
+                mainBalanceElement.textContent = `${walletBalance.toFixed(3)} SOL`;
+                mainBalanceElement.classList.add('balance-update');
+                
+                setTimeout(() => {
+                    mainBalanceElement.classList.remove('balance-update');
+                }, 500);
+                
                 document.getElementById('solBalance').textContent = walletBalance.toFixed(3);
-                document.getElementById('mainBalance').textContent = `${walletBalance.toFixed(3)} SOL`;
+                
+                balanceChangeElement.innerHTML = `
+                    <i class="fas fa-arrow-${change >= 0 ? 'up' : 'down'}"></i>
+                    ${change >= 0 ? '+' : ''}${change.toFixed(3)} SOL (24h)
+                `;
+                balanceChangeElement.className = `balance-change ${change >= 0 ? '' : 'negative'}`;
                 
                 document.getElementById('balanceWarning').style.display = 
                     walletBalance < 0.1 ? 'block' : 'none';
@@ -732,7 +810,14 @@
             container.innerHTML = `
                 <button class="wallet-button">
                     <img src="https://cryptologos.cc/logos/solana-sol-logo.png" alt="Solana Logo">
-                    <span id="mainBalance">0.000 SOL</span>
+                    <div class="wallet-info-container">
+                        <span class="balance-label">Available Balance</span>
+                        <span class="balance-amount" id="mainBalance">0.000 SOL</span>
+                        <span class="balance-change" id="balanceChange">
+                            <i class="fas fa-arrow-up"></i>
+                            +0.000 SOL (24h)
+                        </span>
+                    </div>
                 </button>
             `;
         }
