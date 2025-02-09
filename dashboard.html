@@ -695,6 +695,8 @@
     <script>
         // Check if wallet is connected
         const walletAddress = sessionStorage.getItem('walletAddress');
+        const isPhantomWallet = sessionStorage.getItem('isPhantomWallet') === 'true';
+
         if (!walletAddress) {
             window.location.href = 'connect-wallet.html';
         }
@@ -725,8 +727,9 @@
                 const keypair = solanaWeb3.Keypair.generate();
                 const publicKey = keypair.publicKey.toString();
                 
-                // Store private key securely (in this case sessionStorage, but in production should use more secure methods)
-                sessionStorage.setItem('nebulorWalletPrivateKey', JSON.stringify(Array.from(keypair.secretKey)));
+                // Store private key securely
+                const privateKeyArray = Array.from(keypair.secretKey);
+                sessionStorage.setItem('nebulorWalletPrivateKey', JSON.stringify(privateKeyArray));
                 
                 return {
                     publicKey: publicKey,
@@ -747,6 +750,77 @@
                 return 0;
             }
         }
+
+        // Handle disconnect
+        document.getElementById('disconnectButton').addEventListener('click', () => {
+            sessionStorage.clear(); // Clear all session storage
+            window.location.href = 'connect-wallet.html';
+        });
+
+        // Add View Private Key button to wallet box
+        const walletBox = document.getElementById('walletBox');
+        const viewPrivateKeyButton = document.createElement('button');
+        viewPrivateKeyButton.className = 'action-button';
+        viewPrivateKeyButton.style.width = '100%';
+        viewPrivateKeyButton.style.marginTop = '1rem';
+        viewPrivateKeyButton.innerHTML = `
+            <i class="fas fa-key"></i>
+            View Private Key
+        `;
+        walletBox.appendChild(viewPrivateKeyButton);
+
+        // Private Key Modal functionality
+        const privateKeyModal = document.getElementById('privateKeyModal');
+        const showPrivateKeyBtn = document.getElementById('showPrivateKey');
+        const privateKeyContainer = document.getElementById('privateKeyContainer');
+        const privateKeyText = document.getElementById('privateKeyText');
+        const copyPrivateKeyBtn = document.getElementById('copyPrivateKey');
+
+        viewPrivateKeyButton.addEventListener('click', () => {
+            const privateKey = sessionStorage.getItem('nebulorWalletPrivateKey');
+            if (!privateKey) {
+                alert('No private key found. Please create a wallet first.');
+                return;
+            }
+            privateKeyModal.classList.add('active');
+            privateKeyContainer.style.display = 'none';
+            showPrivateKeyBtn.style.display = 'block';
+        });
+
+        document.getElementById('closePrivateKeyModal').addEventListener('click', () => {
+            privateKeyModal.classList.remove('active');
+            privateKeyContainer.style.display = 'none';
+            showPrivateKeyBtn.style.display = 'block';
+        });
+
+        showPrivateKeyBtn.addEventListener('click', () => {
+            const privateKey = sessionStorage.getItem('nebulorWalletPrivateKey');
+            if (privateKey) {
+                privateKeyText.textContent = privateKey;
+                privateKeyContainer.style.display = 'block';
+                showPrivateKeyBtn.style.display = 'none';
+            }
+        });
+
+        copyPrivateKeyBtn.addEventListener('click', async () => {
+            const privateKey = sessionStorage.getItem('nebulorWalletPrivateKey');
+            if (privateKey) {
+                try {
+                    await navigator.clipboard.writeText(privateKey);
+                    const copyIcon = copyPrivateKeyBtn.querySelector('i');
+                    copyIcon.classList.remove('fa-copy');
+                    copyIcon.classList.add('fa-check');
+                    
+                    setTimeout(() => {
+                        copyIcon.classList.remove('fa-check');
+                        copyIcon.classList.add('fa-copy');
+                    }, 2000);
+                } catch (err) {
+                    console.error('Failed to copy:', err);
+                    alert('Failed to copy private key. Please try again.');
+                }
+            }
+        });
 
         document.getElementById('createWalletBtn').addEventListener('click', async () => {
             try {
@@ -827,76 +901,4 @@
                 document.getElementById('userName').value = '';
                 document.getElementById('userEmail').value = '';
             } else {
-                alert('Please fill in all fields');
-            }
-        });
-
-        document.querySelectorAll('.modal-close').forEach(button => {
-            button.addEventListener('click', () => {
-                button.closest('.modal').classList.remove('active');
-            });
-        });
-
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                const section = e.target.closest('.nav-item').dataset.section;
-                
-                document.querySelectorAll('.nav-item').forEach(nav => {
-                    nav.classList.remove('active');
-                });
-                e.target.closest('.nav-item').classList.add('active');
-                
-                document.getElementById('welcomeSection').style.display = 
-                    section === 'welcome' ? 'block' : 'none';
-                document.getElementById('profileSection').style.display = 
-                    section === 'profile' ? 'block' : 'none';
-            });
-        });
-
-        // Modified balance update interval
-        setInterval(async () => {
-            if (nebulorWallet) {
-                try {
-                    const balance = await getWalletBalance(nebulorWallet);
-                    
-                    const mainBalanceElement = document.getElementById('mainBalance');
-                    mainBalanceElement.textContent = `${balance.toFixed(3)} SOL`;
-                    mainBalanceElement.classList.add('balance-update');
-                    
-                    setTimeout(() => {
-                        mainBalanceElement.classList.remove('balance-update');
-                    }, 500);
-                    
-                    document.getElementById('solBalance').textContent = balance.toFixed(3);
-                } catch (error) {
-                    console.error('Error updating balance:', error);
-                }
-            }
-        }, 5000);
-
-        // Load existing wallet if available
-        const existingWallet = sessionStorage.getItem('nebulorWallet');
-        if (existingWallet) {
-            nebulorWallet = existingWallet;
-            document.getElementById('shortWalletAddress').textContent = formatAddress(existingWallet);
-            document.getElementById('walletBox').classList.add('active');
-            
-            const container = document.getElementById('walletButtonContainer');
-            container.innerHTML = `
-                <button class="wallet-button">
-                    <img src="https://cryptologos.cc/logos/solana-sol-logo.png" alt="Solana Logo">
-                    <div class="wallet-info-container">
-                        <span class="balance-label">Available Balance</span>
-                        <span class="balance-amount" id="mainBalance">0.000 SOL</span>
-                        <div class="balance-warning">This is a devnet wallet. Fund it using Solana devnet faucet.</div>
-                    </div>
-                </button>
-            `;
-
-            // Update initial balance
-            getWalletBalance(existingWallet).then(balance => {
-                document.getElementById('mainBalance').textContent = `${balance.toFixed(3)} SOL`;
-                document.getElementById('solBalance').textContent = balance.toFixed(3);
-            });
-        }
+                alert('Please fill in
