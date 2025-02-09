@@ -487,7 +487,12 @@
                     <div class="wallet-info">
                         <i class="fas fa-wallet"></i>
                         <span>Connected:</span>
-                        <span id="walletAddress" class="wallet-address"></span>
+                        <span class="wallet-address">
+                            <span id="walletAddress"></span>
+                            <button id="copyMainAddress" class="copy-button" title="Copy address">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </span>
                     </div>
                     <button id="disconnectButton" class="disconnect-button">
                         <i class="fas fa-sign-out-alt"></i>
@@ -660,6 +665,47 @@
     </div>
 
     <script>
+        // Check if wallet is connected
+        const walletAddress = sessionStorage.getItem('walletAddress');
+        if (!walletAddress) {
+            window.location.href = 'connect-wallet.html';
+        }
+
+        // Display wallet address
+        const addressElement = document.getElementById('walletAddress');
+        if (addressElement && walletAddress) {
+            const shortAddress = `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`;
+            addressElement.textContent = shortAddress;
+        }
+
+        // Handle disconnect
+        document.getElementById('disconnectButton').addEventListener('click', () => {
+            sessionStorage.removeItem('walletAddress');
+            sessionStorage.removeItem('nebulorWallet');
+            window.location.href = 'connect-wallet.html';
+        });
+
+        // Handle copy main address
+        document.getElementById('copyMainAddress').addEventListener('click', async () => {
+            const fullAddress = sessionStorage.getItem('walletAddress');
+            if (!fullAddress) return;
+            
+            try {
+                await navigator.clipboard.writeText(fullAddress);
+                const copyIcon = document.querySelector('#copyMainAddress i');
+                copyIcon.classList.remove('fa-copy');
+                copyIcon.classList.add('fa-check');
+                
+                setTimeout(() => {
+                    copyIcon.classList.remove('fa-check');
+                    copyIcon.classList.add('fa-copy');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+                alert('Failed to copy address. Please try again.');
+            }
+        });
+
         let nebulorWallet = null;
         let walletBalance = 0;
 
