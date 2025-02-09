@@ -653,11 +653,22 @@
             `;
         });
 
-        document.getElementById('copyAddress').addEventListener('click', () => {
+        document.getElementById('copyAddress').addEventListener('click', async () => {
             const address = document.getElementById('fullWalletAddress').textContent;
-            navigator.clipboard.writeText(address).then(() => {
-                alert('Address copied to clipboard!');
-            });
+            try {
+                await navigator.clipboard.writeText(address);
+                // Change the icon temporarily to show success
+                const copyIcon = document.querySelector('#copyAddress i');
+                copyIcon.classList.remove('fa-copy');
+                copyIcon.classList.add('fa-check');
+                setTimeout(() => {
+                    copyIcon.classList.remove('fa-check');
+                    copyIcon.classList.add('fa-copy');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+                alert('Failed to copy address. Please try again.');
+            }
         });
 
         document.getElementById('learnMoreBtn').addEventListener('click', () => {
