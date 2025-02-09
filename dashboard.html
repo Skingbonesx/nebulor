@@ -24,11 +24,15 @@
             background: rgba(0, 0, 0, 0.5);
             padding: 2rem;
             border-right: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed;
+            height: 100vh;
+            box-sizing: border-box;
         }
 
         .main-content {
             flex: 1;
             padding: 2rem;
+            margin-left: 250px;
         }
 
         .header {
@@ -39,6 +43,10 @@
             padding: 1rem;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
         }
 
         .wallet-info {
@@ -86,86 +94,159 @@
             color: #646cff;
         }
 
-        .card {
+        .welcome-section {
             background: rgba(255, 255, 255, 0.1);
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin-bottom: 1rem;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
         }
 
-        .grid {
+        .welcome-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #646cff, #8f7fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feature-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat {
-            font-size: 2rem;
-            margin: 1rem 0;
-            color: #646cff;
-        }
-
-        .create-agent-button {
-            background: linear-gradient(45deg, #646cff, #8f7fff);
-            color: white;
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
+            gap: 1.5rem;
             margin-top: 2rem;
         }
 
-        .create-agent-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(100, 108, 255, 0.4);
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
+        .feature-card:hover {
+            transform: translateY(-5px);
         }
 
-        th, td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        th {
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 1rem;
             color: #646cff;
         }
 
-        .status-badge {
-            padding: 0.25rem 0.75rem;
+        .feature-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #8f7fff;
+        }
+
+        .feature-description {
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        .getting-started {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
             border-radius: 15px;
-            font-size: 0.9rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .status-active {
-            background: rgba(40, 167, 69, 0.2);
-            color: #28a745;
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
         }
 
-        .status-inactive {
-            background: rgba(108, 117, 125, 0.2);
-            color: #6c757d;
+        .step-number {
+            background: #646cff;
+            color: white;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .resources {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .resource-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .resource-title {
+            color: #646cff;
+            margin-bottom: 0.5rem;
+        }
+
+        .resource-link {
+            color: #8f7fff;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+
+        .resource-link:hover {
+            text-decoration: underline;
+        }
+
+        .profile-section {
+            display: none;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .profile-section.active {
+            display: block;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #646cff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
         }
     </style>
 </head>
 <body>
     <div class="dashboard">
         <div class="sidebar">
-            <a href="#" class="nav-item active">Dashboard</a>
-            <a href="#" class="nav-item">My Agents</a>
-            <a href="#" class="nav-item">Analytics</a>
-            <a href="#" class="nav-item">Settings</a>
-            <button class="create-agent-button">Create New Agent</button>
+            <a href="#" class="nav-item active" data-section="welcome">Welcome</a>
+            <a href="docs.html" class="nav-item">Documentation</a>
+            <a href="privacy.html" class="nav-item">Privacy</a>
+            <a href="#" class="nav-item" data-section="profile">Profile</a>
         </div>
 
         <div class="main-content">
@@ -177,56 +258,91 @@
                 <button id="disconnectButton" class="disconnect-button">Disconnect</button>
             </div>
 
-            <div class="grid">
-                <div class="card">
-                    <h3>Active Agents</h3>
-                    <div class="stat">3</div>
-                    <p>Total agents deployed</p>
+            <div id="welcomeSection" class="welcome-section">
+                <h1 class="welcome-title">Welcome to Nebulor</h1>
+                <p>Your gateway to decentralized AI agents on the blockchain. Get started with our powerful features and tools.</p>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🤖</div>
+                        <h3 class="feature-title">AI Agents</h3>
+                        <p class="feature-description">Create and deploy intelligent agents that autonomously interact with blockchain networks and smart contracts.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⛓️</div>
+                        <h3 class="feature-title">Multi-chain Support</h3>
+                        <p class="feature-description">Deploy your agents across multiple blockchain networks with seamless integration and management.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3 class="feature-title">Analytics Dashboard</h3>
+                        <p class="feature-description">Monitor your agents' performance with real-time analytics and comprehensive reporting tools.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3 class="feature-title">Security First</h3>
+                        <p class="feature-description">Built with enterprise-grade security features to protect your assets and operations.</p>
+                    </div>
                 </div>
-                <div class="card">
-                    <h3>Total Transactions</h3>
-                    <div class="stat">127</div>
-                    <p>Successful transactions</p>
+
+                <div class="getting-started">
+                    <h2>Getting Started</h2>
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h3>Connect Your Wallet</h3>
+                                <p>Link your Phantom wallet to access all Nebulor features and manage your agents securely.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h3>Create Your First Agent</h3>
+                                <p>Choose from our templates or create a custom AI agent tailored to your needs.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h3>Deploy and Monitor</h3>
+                                <p>Deploy your agent to your chosen network and monitor its performance in real-time.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card">
-                    <h3>Performance</h3>
-                    <div class="stat">98.5%</div>
-                    <p>Success rate</p>
+
+                <div class="resources">
+                    <div class="resource-card">
+                        <h3 class="resource-title">Documentation</h3>
+                        <p>Comprehensive guides and API references to help you build powerful AI agents.</p>
+                        <a href="docs.html" class="resource-link">View Documentation →</a>
+                    </div>
+                    <div class="resource-card">
+                        <h3 class="resource-title">Templates</h3>
+                        <p>Ready-to-use agent templates for common use cases and scenarios.</p>
+                        <a href="#" class="resource-link">Browse Templates →</a>
+                    </div>
+                    <div class="resource-card">
+                        <h3 class="resource-title">Community</h3>
+                        <p>Join our community of developers and AI enthusiasts.</p>
+                        <a href="#" class="resource-link">Join Discord →</a>
+                    </div>
                 </div>
             </div>
 
-            <div class="card">
-                <h3>Recent Agents</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Agent Name</th>
-                            <th>Type</th>
-                            <th>Status</th>
-                            <th>Last Active</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Trading Bot Alpha</td>
-                            <td>DeFi Trading</td>
-                            <td><span class="status-badge status-active">Active</span></td>
-                            <td>2 minutes ago</td>
-                        </tr>
-                        <tr>
-                            <td>Monitor Beta</td>
-                            <td>Network Monitor</td>
-                            <td><span class="status-badge status-active">Active</span></td>
-                            <td>15 minutes ago</td>
-                        </tr>
-                        <tr>
-                            <td>Oracle Agent</td>
-                            <td>Data Provider</td>
-                            <td><span class="status-badge status-inactive">Inactive</span></td>
-                            <td>1 hour ago</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div id="profileSection" class="profile-section">
+                <div class="profile-header">
+                    <div class="profile-avatar">N</div>
+                    <div>
+                        <h2>Your Profile</h2>
+                        <p class="wallet-address" id="profileWalletAddress"></p>
+                    </div>
+                </div>
+                <div class="profile-content">
+                    <h3>Account Details</h3>
+                    <p>Manage your profile settings and preferences here.</p>
+                </div>
             </div>
         </div>
     </div>
@@ -240,15 +356,46 @@
 
         // Display wallet address
         const addressElement = document.getElementById('walletAddress');
+        const profileAddressElement = document.getElementById('profileWalletAddress');
         if (addressElement && walletAddress) {
             const shortAddress = `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`;
             addressElement.textContent = shortAddress;
+            if (profileAddressElement) {
+                profileAddressElement.textContent = shortAddress;
+            }
         }
 
         // Handle disconnect
         document.getElementById('disconnectButton').addEventListener('click', () => {
             sessionStorage.removeItem('walletAddress');
             window.location.href = 'connect-wallet.html';
+        });
+
+        // Handle navigation
+        const welcomeSection = document.getElementById('welcomeSection');
+        const profileSection = document.getElementById('profileSection');
+        const navItems = document.querySelectorAll('.nav-item');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                const section = e.target.getAttribute('data-section');
+                if (section) {
+                    e.preventDefault();
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    e.target.classList.add('active');
+
+                    // Hide all sections
+                    welcomeSection.style.display = 'none';
+                    profileSection.style.display = 'none';
+
+                    // Show selected section
+                    if (section === 'welcome') {
+                        welcomeSection.style.display = 'block';
+                    } else if (section === 'profile') {
+                        profileSection.style.display = 'block';
+                    }
+                }
+            });
         });
     </script>
 </body>
