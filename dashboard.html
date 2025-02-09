@@ -28,6 +28,29 @@
             position: fixed;
             height: 100vh;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 2rem;
+            text-decoration: none;
+        }
+
+        .sidebar-logo img {
+            width: 100px;
+            height: auto;
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-logo span {
+            color: #646cff;
+            font-size: 1.5rem;
+            font-weight: bold;
         }
 
         .main-content {
@@ -164,14 +187,8 @@
             height: 100vh;
             background: rgba(0, 0, 0, 0.9);
             padding: 2rem;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
             z-index: 1000;
             box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
-        }
-
-        .wallet-panel.active {
-            transform: translateX(0);
         }
 
         .user-form {
@@ -385,6 +402,10 @@
 <body>
     <div class="dashboard">
         <div class="sidebar">
+            <div class="sidebar-logo">
+                <img src="logo.png" alt="Nebulor Logo">
+                <span>Nebulor</span>
+            </div>
             <a href="#" class="nav-item active" data-section="welcome">
                 <i class="fas fa-home"></i>
                 Welcome
@@ -577,7 +598,6 @@
         let nebulorWallet = null;
         let walletBalance = 0;
 
-        // Generate random Solana address
         function generateRandomSolanaAddress() {
             const chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
             let address = '';
@@ -587,46 +607,40 @@
             return address;
         }
 
-        // Check if wallet is connected
         const walletAddress = sessionStorage.getItem('walletAddress');
         if (!walletAddress) {
             window.location.href = 'index.html';
         }
 
-        // Display wallet address
         const addressElement = document.getElementById('walletAddress');
         if (addressElement && walletAddress) {
             const shortAddress = `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`;
             addressElement.textContent = shortAddress;
         }
 
-        // Handle disconnect
         document.getElementById('disconnectButton').addEventListener('click', () => {
             sessionStorage.removeItem('walletAddress');
             sessionStorage.removeItem('nebulorWallet');
             window.location.href = 'index.html';
         });
 
-        // Handle wallet creation
         document.getElementById('createWalletBtn').addEventListener('click', () => {
             const newAddress = generateRandomSolanaAddress();
             nebulorWallet = newAddress;
             sessionStorage.setItem('nebulorWallet', newAddress);
             
-            // Update wallet panel
             document.getElementById('fullWalletAddress').textContent = newAddress;
-            document.getElementById('walletPanel').classList.add('active');
+            document.getElementById('walletPanel').style.display = 'block';
             
-            // Replace create wallet button with Solana logo
             const container = document.getElementById('walletButtonContainer');
             container.innerHTML = `
-                <button class="wallet-button" onclick="document.getElementById('walletPanel').classList.add('active')">
+                <button class="wallet-button">
                     <img src="https://cryptologos.cc/logos/solana-sol-logo.png" alt="Solana Logo">
+                    <span id="mainBalance">0.000 SOL</span>
                 </button>
             `;
         });
 
-        // Copy address functionality
         document.getElementById('copyAddress').addEventListener('click', () => {
             const address = document.getElementById('fullWalletAddress').textContent;
             navigator.clipboard.writeText(address).then(() => {
@@ -634,12 +648,10 @@
             });
         });
 
-        // Handle learn more button
         document.getElementById('learnMoreBtn').addEventListener('click', () => {
             document.getElementById('learningModal').classList.add('active');
         });
 
-        // Handle application submission
         document.getElementById('submitApplication').addEventListener('click', () => {
             const name = document.getElementById('userName').value;
             const email = document.getElementById('userEmail').value;
@@ -664,26 +676,22 @@
             }
         });
 
-        // Close modals
         document.querySelectorAll('.modal-close').forEach(button => {
             button.addEventListener('click', () => {
                 button.closest('.modal').classList.remove('active');
             });
         });
 
-        // Handle navigation
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
                 const section = e.target.closest('.nav-item').dataset.section;
                 
-                // Update active nav item
                 document.querySelectorAll('.nav-item').forEach(nav => {
                     nav.classList.remove('active');
                 });
                 e.target.closest('.nav-item').classList.add('active');
                 
-                // Show correct section
                 document.getElementById('welcomeSection').style.display = 
                     section === 'welcome' ? 'block' : 'none';
                 document.getElementById('profileSection').style.display = 
@@ -691,7 +699,6 @@
             });
         });
 
-        // Close wallet panel when clicking outside
         document.addEventListener('click', (e) => {
             const walletPanel = document.getElementById('walletPanel');
             const createWalletBtn = document.getElementById('createWalletBtn');
@@ -701,18 +708,31 @@
             }
         });
 
-        // Simulate balance update (in real app, this would come from blockchain)
         setInterval(() => {
             if (nebulorWallet) {
-                // Simulate random balance changes
                 walletBalance = Math.random() * 0.2;
                 document.getElementById('solBalance').textContent = walletBalance.toFixed(3);
+                document.getElementById('mainBalance').textContent = `${walletBalance.toFixed(3)} SOL`;
                 
-                // Update warning visibility
                 document.getElementById('balanceWarning').style.display = 
                     walletBalance < 0.1 ? 'block' : 'none';
             }
         }, 5000);
+
+        const existingWallet = sessionStorage.getItem('nebulorWallet');
+        if (existingWallet) {
+            nebulorWallet = existingWallet;
+            document.getElementById('fullWalletAddress').textContent = existingWallet;
+            document.getElementById('walletPanel').style.display = 'block';
+            
+            const container = document.getElementById('walletButtonContainer');
+            container.innerHTML = `
+                <button class="wallet-button">
+                    <img src="https://cryptologos.cc/logos/solana-sol-logo.png" alt="Solana Logo">
+                    <span id="mainBalance">0.000 SOL</span>
+                </button>
+            `;
+        }
     </script>
 </body>
 </html>
