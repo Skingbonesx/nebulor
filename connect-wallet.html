@@ -124,6 +124,7 @@
                 
                 // Store the public key in session storage
                 sessionStorage.setItem('walletAddress', publicKey);
+                sessionStorage.setItem('isPhantomWallet', 'true');
                 
                 statusElement.textContent = 'Connected! Redirecting...';
                 
