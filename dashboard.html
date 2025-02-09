@@ -538,8 +538,8 @@
                     <h2>Your Nebulor Wallet</h2>
                 </div>
                 <div class="wallet-address">
-                    <span id="fullWalletAddress"></span>
-                    <button id="copyAddress" class="copy-button">
+                    <span id="shortWalletAddress"></span>
+                    <button id="copyAddress" class="copy-button" title="Copy full address">
                         <i class="fas fa-copy"></i>
                     </button>
                 </div>
@@ -610,6 +610,10 @@
         let nebulorWallet = null;
         let walletBalance = 0;
 
+        function formatAddress(address) {
+            return `${address.slice(0, 4)}...${address.slice(-4)}`;
+        }
+
         function generateRandomSolanaAddress() {
             const chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
             let address = '';
@@ -619,29 +623,13 @@
             return address;
         }
 
-        const walletAddress = sessionStorage.getItem('walletAddress');
-        if (!walletAddress) {
-            window.location.href = 'index.html';
-        }
-
-        const addressElement = document.getElementById('walletAddress');
-        if (addressElement && walletAddress) {
-            const shortAddress = `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`;
-            addressElement.textContent = shortAddress;
-        }
-
-        document.getElementById('disconnectButton').addEventListener('click', () => {
-            sessionStorage.removeItem('walletAddress');
-            sessionStorage.removeItem('nebulorWallet');
-            window.location.href = 'index.html';
-        });
-
         document.getElementById('createWalletBtn').addEventListener('click', () => {
             const newAddress = generateRandomSolanaAddress();
             nebulorWallet = newAddress;
             sessionStorage.setItem('nebulorWallet', newAddress);
             
-            document.getElementById('fullWalletAddress').textContent = newAddress;
+            // Update both short and full address displays
+            document.getElementById('shortWalletAddress').textContent = formatAddress(newAddress);
             document.getElementById('walletBox').classList.add('active');
             
             const container = document.getElementById('walletButtonContainer');
@@ -654,13 +642,14 @@
         });
 
         document.getElementById('copyAddress').addEventListener('click', async () => {
-            const address = document.getElementById('fullWalletAddress').textContent;
+            if (!nebulorWallet) return;
+            
             try {
-                await navigator.clipboard.writeText(address);
-                // Change the icon temporarily to show success
+                await navigator.clipboard.writeText(nebulorWallet);
                 const copyIcon = document.querySelector('#copyAddress i');
                 copyIcon.classList.remove('fa-copy');
                 copyIcon.classList.add('fa-check');
+                
                 setTimeout(() => {
                     copyIcon.classList.remove('fa-check');
                     copyIcon.classList.add('fa-copy');
@@ -736,7 +725,7 @@
         const existingWallet = sessionStorage.getItem('nebulorWallet');
         if (existingWallet) {
             nebulorWallet = existingWallet;
-            document.getElementById('fullWalletAddress').textContent = existingWallet;
+            document.getElementById('shortWalletAddress').textContent = formatAddress(existingWallet);
             document.getElementById('walletBox').classList.add('active');
             
             const container = document.getElementById('walletButtonContainer');
