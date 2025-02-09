@@ -691,10 +691,6 @@
                     <div class="wallet-info-container">
                         <span class="balance-label">Available Balance</span>
                         <span class="balance-amount" id="mainBalance">0.000 SOL</span>
-                        <span class="balance-change" id="balanceChange">
-                            <i class="fas fa-arrow-up"></i>
-                            +0.000 SOL (24h)
-                        </span>
                     </div>
                 </button>
             `;
@@ -770,16 +766,11 @@
             });
         });
 
-        let previousBalance = 0;
         setInterval(() => {
             if (nebulorWallet) {
-                previousBalance = walletBalance;
                 walletBalance = Math.random() * 0.2;
                 
                 const mainBalanceElement = document.getElementById('mainBalance');
-                const balanceChangeElement = document.getElementById('balanceChange');
-                const change = walletBalance - previousBalance;
-                
                 mainBalanceElement.textContent = `${walletBalance.toFixed(3)} SOL`;
                 mainBalanceElement.classList.add('balance-update');
                 
@@ -788,12 +779,6 @@
                 }, 500);
                 
                 document.getElementById('solBalance').textContent = walletBalance.toFixed(3);
-                
-                balanceChangeElement.innerHTML = `
-                    <i class="fas fa-arrow-${change >= 0 ? 'up' : 'down'}"></i>
-                    ${change >= 0 ? '+' : ''}${change.toFixed(3)} SOL (24h)
-                `;
-                balanceChangeElement.className = `balance-change ${change >= 0 ? '' : 'negative'}`;
                 
                 document.getElementById('balanceWarning').style.display = 
                     walletBalance < 0.1 ? 'block' : 'none';
@@ -813,10 +798,6 @@
                     <div class="wallet-info-container">
                         <span class="balance-label">Available Balance</span>
                         <span class="balance-amount" id="mainBalance">0.000 SOL</span>
-                        <span class="balance-change" id="balanceChange">
-                            <i class="fas fa-arrow-up"></i>
-                            +0.000 SOL (24h)
-                        </span>
                     </div>
                 </button>
             `;
