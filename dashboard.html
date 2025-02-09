@@ -542,9 +542,6 @@
                             <label>Email</label>
                             <input type="email" id="userEmail" placeholder="Enter your email">
                         </div>
-                        <div id="balanceWarning" class="balance-warning" style="display: none;">
-                            Minimum balance of 0.1 SOL required to submit application
-                        </div>
                         <button id="submitApplication" class="action-button">
                             <i class="fas fa-paper-plane"></i>
                             Submit Application
@@ -773,17 +770,11 @@
                 alert('Please create a Nebulor wallet first');
                 return;
             }
-
-            if (walletBalance < 0.1) {
-                document.getElementById('balanceWarning').style.display = 'block';
-                return;
-            }
             
             if (name && email) {
                 document.getElementById('applicationModal').classList.add('active');
                 document.getElementById('userName').value = '';
                 document.getElementById('userEmail').value = '';
-                document.getElementById('balanceWarning').style.display = 'none';
             } else {
                 alert('Please fill in all fields');
             }
@@ -825,9 +816,6 @@
                 }, 500);
                 
                 document.getElementById('solBalance').textContent = walletBalance.toFixed(3);
-                
-                document.getElementById('balanceWarning').style.display = 
-                    walletBalance < 0.1 ? 'block' : 'none';
             }
         }, 5000);
 
