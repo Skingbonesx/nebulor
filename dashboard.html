@@ -148,6 +148,8 @@
             margin-bottom: 0.5rem;
             border-radius: 5px;
             transition: all 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .nav-item i {
@@ -697,6 +699,7 @@
         const learningModal = document.getElementById('learningModal');
         const applicationModal = document.getElementById('applicationModal');
         const privateKeyModal = document.getElementById('privateKeyModal');
+        let nebulorWallet = null;
 
         // Close modal buttons
         document.getElementById('closeLearningModal').addEventListener('click', () => {
@@ -709,8 +712,8 @@
 
         document.getElementById('closePrivateKeyModal').addEventListener('click', () => {
             privateKeyModal.classList.remove('active');
-            privateKeyContainer.style.display = 'none';
-            showPrivateKeyBtn.style.display = 'block';
+            document.getElementById('privateKeyContainer').style.display = 'none';
+            document.getElementById('showPrivateKey').style.display = 'block';
         });
 
         // Navigation
@@ -739,6 +742,34 @@
                 }
             });
         });
+
+        // Initialize Solana connection
+        const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('devnet'));
+
+        // Format address helper
+        function formatAddress(address) {
+            return `${address.slice(0, 6)}...${address.slice(-4)}`;
+        }
+
+        // Get wallet balance helper
+        async function getWalletBalance(address) {
+            try {
+                const balance = await connection.getBalance(new solanaWeb3.PublicKey(address));
+                return balance / solanaWeb3.LAMPORTS_PER_SOL;
+            } catch (error) {
+                console.error('Error getting balance:', error);
+                return 0;
+            }
+        }
+
+        // Create Solana wallet helper
+        async function createSolanaWallet() {
+            const keypair = solanaWeb3.Keypair.generate();
+            return {
+                publicKey: keypair.publicKey.toString(),
+                privateKey: Array.from(keypair.secretKey)
+            };
+        }
 
         // Copy main address button
         document.getElementById('copyMainAddress').addEventListener('click', async () => {
@@ -857,7 +888,60 @@
             });
         }
 
-        // Rest of the existing code...
+        // Check if user is connected
+        const connectedWallet = sessionStorage.getItem('walletAddress');
+        if (connectedWallet) {
+            document.getElementById('walletAddress').textContent = formatAddress(connectedWallet);
+        } else {
+            window.location.href = 'connect-wallet.html';
+        }
+
+        // Handle disconnect
+        document.getElementById('disconnectButton').addEventListener('click', () => {
+            // Clear session storage
+            sessionStorage.removeItem('walletAddress');
+            sessionStorage.removeItem('isPhantomWallet');
+            sessionStorage.removeItem('nebulorWallet');
+            
+            // Redirect to connect wallet page
+            window.location.href = 'connect-wallet.html';
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+                if (e.target === privateKeyModal) {
+                    document.getElementById('privateKeyContainer').style.display = 'none';
+                    document.getElementById('showPrivateKey').style.display = 'block';
+                }
+            }
+        });
+
+        // Update wallet address display
+        const walletAddressElement = document.getElementById('walletAddress');
+        if (walletAddressElement && connectedWallet) {
+            walletAddressElement.textContent = formatAddress(connectedWallet);
+        }
+
+        // Periodic balance update
+        if (nebulorWallet) {
+            setInterval(async () => {
+                const balance = await getWalletBalance(nebulorWallet);
+                const mainBalanceElement = document.getElementById('mainBalance');
+                const solBalanceElement = document.getElementById('solBalance');
+                
+                if (mainBalanceElement) {
+                    mainBalanceElement.textContent = `${balance.toFixed(3)} SOL`;
+                    mainBalanceElement.classList.add('balance-update');
+                    setTimeout(() => mainBalanceElement.classList.remove('balance-update'), 500);
+                }
+                
+                if (solBalanceElement) {
+                    solBalanceElement.textContent = balance.toFixed(3);
+                }
+            }, 10000); // Update every 10 seconds
+        }
     </script>
 </body>
 </html>
