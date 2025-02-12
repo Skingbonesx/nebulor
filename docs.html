@@ -252,7 +252,7 @@ import { Nebulor } from '@nebulor/sdk';
 
 const nebulor = new Nebulor({
     apiKey: 'your-api-key',
-    network: 'ethereum'
+    network: 'solana'
 });</div>
 
                 <h2>3. Create an Agent</h2>
@@ -273,7 +273,7 @@ const agent = await nebulor.createAgent({
                 <ul>
                     <li>Node.js 16.x or higher</li>
                     <li>npm 7.x or higher</li>
-                    <li>Ethereum wallet (MetaMask recommended)</li>
+                    <li>solana wallet (phantom recommended)</li>
                 </ul>
 
                 <h2>Installation Steps</h2>
@@ -341,18 +341,15 @@ npm install ethers@^5.0.0</div>
 
                 <h2>Supported Networks</h2>
                 <ul>
-                    <li>Ethereum Mainnet</li>
-                    <li>Polygon</li>
-                    <li>Binance Smart Chain</li>
-                    <li>Arbitrum</li>
-                    <li>Optimism</li>
+                    <li>solana Mainnet</li>
+                    <li>solana testnet</li>
                 </ul>
 
                 <h2>Network Configuration</h2>
                 <div class="code-block">
 const nebulor = new Nebulor({
     network: {
-        name: 'ethereum',
+        name: 'solana',
         rpcUrl: 'https://your-rpc-url',
         chainId: 1
     }
