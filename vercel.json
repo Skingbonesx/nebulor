@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/roadmap", "destination": "/roadmap.html" },
+    { "source": "/whitepaper", "destination": "/whitepaper.html" },
+    { "source": "/docs", "destination": "/docs.html" }
+    { "source": "/privacy", "destination": "/privacy.html" } 
+    { "source": "/nebulor", "destination": "/connect-wallet.html.html" } 
+  ]
+}
