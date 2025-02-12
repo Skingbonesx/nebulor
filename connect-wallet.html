@@ -130,7 +130,7 @@
                 
                 // Redirect to dashboard
                 setTimeout(() => {
-                    window.location.href = 'dashboard.html';
+                    window.location.href = '/dashboard';
                 }, 1000);
             } catch (error) {
                 console.error('Error connecting wallet:', error);
@@ -148,7 +148,7 @@
 
         // Check if already connected
         if (sessionStorage.getItem('walletAddress')) {
-            window.location.href = 'dashboard.html';
+            window.location.href = '/dashboard'';
         }
     </script>
 </body>
