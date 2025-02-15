@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nebulor - Maintenance</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #000000, #1a1a2e);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .maintenance-container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            margin-bottom: 2rem;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .logo img {
+            width: 150px;
+            height: auto;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #646cff, #8f7fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .message {
+            font-size: 1.1rem;
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .status-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+        }
+
+        .status-title {
+            color: #646cff;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress {
+            width: 75%;
+            height: 100%;
+            background: linear-gradient(45deg, #646cff, #8f7fff);
+            border-radius: 3px;
+            animation: progress 2s ease-in-out infinite;
+        }
+
+        .eta {
+            color: #8f7fff;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: #646cff;
+            transform: translateY(-3px);
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #646cff;
+            border-radius: 50%;
+            animation: particleFloat 20s infinite linear;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(100, 108, 255, 0.5); }
+            to { text-shadow: 0 0 20px rgba(100, 108, 255, 0.8); }
+        }
+
+        @keyframes progress {
+            0% { transform: translateX(-100%); }
+            50% { transform: translateX(0); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-1000px) rotate(360deg); opacity: 0; }
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            border: 1px solid rgba(40, 167, 69, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles">
+        <!-- Particles will be added by JavaScript -->
+    </div>
+
+    <div class="maintenance-container">
+        <div class="logo">
+            <img src="logo.png" alt="Nebulor Logo">
+        </div>
+        
+        <h1 class="title">System Maintenance</h1>
+        <p class="message">
+            We're currently upgrading Nebulor to bring you an even better experience. 
+            Our team is working diligently to complete the maintenance as quickly as possible.
+        </p>
+
+        <div class="status-box">
+            <div class="status-title">
+                <i class="fas fa-cog fa-spin"></i>
+                Maintenance Progress
+            </div>
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+            <div class="eta">Estimated completion: 2 hours</div>
+        </div>
+
+        <p class="message">
+            Follow us on social media for real-time updates and announcements.
+        </p>
+
+        <div class="social-links">
+            <a href="https://twitter.com/nebulor" class="social-link" target="_blank">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://discord.gg/nebulor" class="social-link" target="_blank">
+                <i class="fab fa-discord"></i>
+            </a>
+            <a href="https://t.me/nebulor" class="social-link" target="_blank">
+                <i class="fab fa-telegram"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="notification">
+        <i class="fas fa-bell"></i>
+        Get notified when we're back online
+    </div>
+
+    <script>
+        // Create floating particles
+        const particles = document.querySelector('.particles');
+        const particleCount = 50;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.animationDelay = `${Math.random() * 20}s`;
+            particles.appendChild(particle);
+        }
+
+        // Update progress randomly
+        const progress = document.querySelector('.progress');
+        const eta = document.querySelector('.eta');
+        let currentProgress = 75;
+
+        setInterval(() => {
+            if (Math.random() > 0.7 && currentProgress < 95) {
+                currentProgress += Math.random() * 5;
+                if (currentProgress > 95) currentProgress = 95;
+                progress.style.width = `${currentProgress}%`;
+                
+                const remainingTime = Math.ceil((100 - currentProgress) / 5);
+                eta.textContent = `Estimated completion: ${remainingTime} hour${remainingTime !== 1 ? 's' : ''}`;
+            }
+        }, 10000);
+
+        // Notification interaction
+        const notification = document.querySelector('.notification');
+        notification.addEventListener('click', () => {
+            notification.innerHTML = `
+                <i class="fas fa-check"></i>
+                We'll notify you when we're back
+            `;
+            notification.style.background = 'rgba(40, 167, 69, 0.2)';
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideIn 0.5s ease-out reverse';
+                setTimeout(() => notification.remove(), 500);
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
